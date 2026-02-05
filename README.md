@@ -10,6 +10,8 @@ The simulation features **1,000 decentralized agents** that collaboratively opti
 
 ---
 
+## Active inference is not just a cognitive theory — it functions as a scalable learning principle.
+
 ## Core 
 
 ### 1. Active Inference & Belief Updating
