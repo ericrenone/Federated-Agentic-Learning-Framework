@@ -1,63 +1,54 @@
-# Federated Active Inference (FAI) - FRAMEWORK
+# Federated Active Inference (FAI) & Information Geometry
 
-### Distributed Minimization of Variational Free Energy at Scale: Free-energy minimization alone is sufficient to drive distributed learning, convergence, and model simplification in a federated multi-agent system.
+## Core
 
-## Project Overview
-
-This repository implements a **Federated Active Inference** framework. It bridges the gap between **Theoretical Neuroscience (The Free Energy Principle)** and **Distributed Machine Learning (Federated Learning)**.
-
-The simulation features **1,000 decentralized agents** that collaboratively optimize a shared generative model. Unlike standard Federated Learning which minimizes frequentist loss, this system minimizes **Variational Free Energy (VFE)**, allowing agents to balance sensory accuracy with model complexity.
-
----
-
-## Active inference is not just a cognitive theory — it functions as a scalable learning principle.
-
-### 1. Active Inference & Belief Updating
-
-Each agent functions as a variational inference engine. It maintains internal beliefs about hidden environmental states and updates them to minimize "surprise" (Free Energy).
-
-* **Complexity:** The  divergence between the agent's posterior and its prior beliefs.
-* **Accuracy:** The expected log-likelihood of observations given the current model parameters.
-
-### 2. Bayesian Model Reduction
-
-Agents are capable of **structural learning**. As the global model stabilizes, agents evaluate whether a "Complex" or "Simple" prior better minimizes their local Free Energy, favoring simplicity when environmental uncertainty is low.
-Model compression is an emergent property of Bayesian inference — not a heuristic.
-
-### 3. Federated Aggregation (FedAvg)
-
-Nodes compute gradients of their local Free Energy functionals and transmit weight updates to a global server. The server aggregates these into a **Global Likelihood Matrix ()**, which is then redistributed to all agents.
-Local variational objectives induce coherent global learning.
+This framework moves beyond standard gradient descent, treating learning as a **geodesic path** on a statistical manifold.
+1.  **Active Inference:** Agents don't just "learn"; they minimize **Free Energy ($F$)**—a trade-off between accuracy (likelihood) and complexity (divergence).
+2.  **Fisher-Shannon Geodesics:** Learning is optimized by following the natural gradient of the **Fisher Information Metric**, ensuring stable convergence in probability space.
+3.  **Bayesian Model Reduction:** Complex agents dynamically switch to simpler generative models if it reduces local surprise, mimicking biological energy efficiency.
 
 ---
 
-We demonstrate that federated populations of active inference agents self-organize toward accurate, low-complexity generative models solely through variational free-energy minimization, inducing convergence, structural simplification, and global coordination without centralized supervision.
+## 🛠 Technical Architecture
 
-## Features
+### 1. Variational Free Energy (FAI)
+Each agent operates as a self-organizing system. The objective is to minimize the **Action Integral** of Free Energy:
 
-* **Large Scale:** Simulated environment with **1,000 nodes** and **100 training rounds**.
-* **Real-time Visualization:** Integrated Matplotlib dashboard showing:
-* **VFE Convergence:** The downward trajectory of population surprise.
-* **Model Drift:** The stabilization of the global parameter manifold.
-* **Model Adoption:** The phase transition from complex to simple internal models.
+$$F = D_{KL}[q(s) || p(s)] - E_{q(s)}[\ln p(o|s)]$$
 
-
-* **Robust Engine:** Pure Python implementation of variational math (Softmax, KL-Divergence) with numerical stability protections.
+* **Complexity:** Divergence between current beliefs $q(s)$ and priors $p(s)$.
+* **Accuracy:** Expected log-likelihood of observations given the hidden state.
 
 
-## Dashboard Metrics
 
-| Metric | Description | Scientific Significance |
-| --- | --- | --- |
-| **Avg Free Energy** | Collective surprise across the population. | Measures the "fit" of the global generative model. |
-| **Global Drift** | Magnitude of change in the Likelihood Matrix. | Indicates convergence to a "Consensus Reality." |
-| **Simple Model Ratio** | Percentage of agents utilizing reduced priors. | Demonstrates Occam's Razor in a variational setting. |
+### 2. Information Geometry & Fisher Metric
+The learner treats the parameter space as a **Riemannian Manifold**. 
+* **Fisher Information Matrix ($G$):** Quantifies the curvature of the manifold.
+* **Natural Gradient:** Updates follow $\theta_{t+1} = \theta_t - \eta G^{-1} \nabla L$, ensuring the update step is aware of the statistical geometry, preventing catastrophic "drift" in decentralized settings.
+
+
+
+### 3. Federated Aggregation (FedAvg-KL)
+To synchronize 1,000+ nodes, the framework employs **KL-Optimal Aggregation**, minimizing the global divergence across the population:
+
+$$\min_{\theta^*} \sum_{i=1}^N D_{KL}(p_{\theta_i} || p_{\theta^*})$$
 
 ---
 
-## Mathematical Implementation
+## 📊 Real-Time Analytics Dashboard
 
-The core objective function minimized by the network is defined as:
+The framework includes a high-speed telemetry suite (Matplotlib & ASCII) to track the "thermodynamics" of the network:
 
-Where  represents the global weights defining the observation likelihoods shared across the federated network.
+| Metric | Purpose | System Signal |
+| :--- | :--- | :--- |
+| **Average Free Energy** | Measures collective "surprise." | Downward trend = Convergence. |
+| **Fisher Information** | Measures model "peakiness" or certainty. | Upward trend = Structural learning. |
+| **System Entropy ($H$)** | Measures statistical disorder in the swarm. | Downward trend = Consensus. |
+| **Relational Abstraction**| Measures the transition from data to concepts. | High ratio = Efficient compression. |
 
+
+
+
+### Installation
+```bash
+pip install matplotlib torch transformers
